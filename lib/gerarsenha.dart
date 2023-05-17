@@ -1,146 +1,188 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:flutter_application/login.dart';
+import 'dart:math';
 
-class gerarsenha extends StatelessWidget {
+bool _maiuscula = true;
+bool _minusculas = true;
+bool _caracterespecial = true;
+bool _numeros = true;
+double _range = 6;
+String _pass = '';
+
+class gerarsenha extends StatefulWidget {
+  const gerarsenha({Key? key}) : super(key: key);
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300],
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return login();
-            }));
-          },
-        ),
-        title: Text('Gerador de senhas'),
-      ),
-      body: _Body(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.amber,
-        foregroundColor: Colors.black,
-        onPressed: () {},
-        child: Icon(Icons.email),
-      ),
-    );
+  gerarSenhaState createState() {
+    return gerarSenhaState();
   }
 }
 
-Widget textMaior() {
-  return Text(
-    "Gerador de senhas",
-    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
-    textAlign: TextAlign.center,
-  );
-}
-
-Widget textMenor() {
-  return Text(
-    "Como deseja gerar sua senha",
-    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-    textAlign: TextAlign.center,
-  );
-}
-
-Widget fieldEmail() {
-  return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      decoration:
-          InputDecoration(border: OutlineInputBorder(), labelText: "Email"));
-}
-
-Widget sizedBox() {
-  return Container(
-    child: Image.asset(
-      'assets/images/passwordrecovery.png',
-      height: 220,
-      width: 220,
-    ),
-  );
-}
-
-Widget CheckBoxSelecao() {
-  var _aazselected = false;
-  var _zeroanoveselected = false;
-  var _arrobajogoselected = false;
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      Checkbox(
-        value: _aazselected,
-        onChanged: (value) {
-          _aazselected = true;
-        },
-      ),
-      Text('[A-Z]'),
-      Checkbox(
-        value: _zeroanoveselected,
-        onChanged: (value) {
-          _zeroanoveselected = true;
-        },
-      ),
-      Text('[0-9]'),
-      Checkbox(
-        value: _arrobajogoselected,
-        onChanged: (value) {
-          _arrobajogoselected = true;
-        },
-      ),
-      Text('[@-#]'),
-    ],
-  );
-}
-
-Widget AddRange() {
-  double _currentSliderValue = 1;
-  return Slider(
-    value: 0,
-    max: 100,
-    divisions: 1,
-    label: _currentSliderValue.round().toString(),
-    onChanged: (double value) {},
-  );
-}
-
-Widget gerarSenha() {
-  return Container(
-      height: 50,
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      child:
-          ElevatedButton(child: const Text('Gerar Senha'), onPressed: () {}));
-}
-
-class _Body extends StatelessWidget {
+class gerarSenhaState extends State<gerarsenha> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
-        child: ListView(
-          children: [
-            sizedBox(),
-            textMaior(),
-            textMenor(),
-            SizedBox(
-              height: 20,
-            ),
-            fieldEmail(),
-            SizedBox(
-              height: 20,
-            ),
-            CheckBoxSelecao(),
-            SizedBox(
-              height: 20,
-            ),
-            AddRange(),
-            SizedBox(
-              height: 20,
-            ),
-            gerarSenha(),
-          ],
-        ));
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Gerador de senha'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black38,
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ),
+        body: Container(
+          padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+          child: ListView(
+            children: [
+              sizedBox(),
+              TextoMaior(),
+              TextoMenor(),
+              SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Checkbox(
+                    value: _maiuscula,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _maiuscula = value!;
+                      });
+                    }),
+                Text('[A-Z]'),
+                Checkbox(
+                    value: _minusculas,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _minusculas = value!;
+                      });
+                    }),
+                Text('[a-z]'),
+                Checkbox(
+                    value: _numeros,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _numeros = value!;
+                      });
+                    }),
+                Text('[0-9]'),
+                Checkbox(
+                    value: _caracterespecial,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        _caracterespecial = value!;
+                      });
+                    }),
+                Text('[@#!]')
+              ]),
+              SizedBox(
+                height: 20,
+              ),
+              Slider(
+                value: _range,
+                max: 15,
+                divisions: 15,
+                label: _range.round().toString(),
+                onChanged: (double newRange) {
+                  setState(() {
+                    _range = newRange;
+                  });
+                },
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                      height: 50,
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: ElevatedButton(
+                        child: const Text('Gerar senha'),
+                        onPressed: () => {geradorPassword()},
+                      )),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * .50,
+                    decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Center(
+                      child: Text(
+                        _pass,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget sizedBox() {
+    return SizedBox(
+      width: 200,
+      height: 200,
+      child: Image.network(
+          "https://cdn.pixabay.com/photo/2013/04/01/09/02/read-only-98443_1280.png"),
+    );
+  }
+
+  Widget TextoMaior() {
+    return Text(
+      'Gerador automático de senha',
+      style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget TextoMenor() {
+    return Text(
+      'Aqui você escolhe como deseja gerar sua senha',
+      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+      textAlign: TextAlign.center,
+    );
+  }
+
+  Widget FieldSenha() {
+    return TextFormField(
+        keyboardType: TextInputType.emailAddress,
+        decoration: InputDecoration(
+            border: OutlineInputBorder(), labelText: 'Senha Gerada'));
+  }
+
+  geradorPassword() {
+    List<String> charList = <String>[
+      _maiuscula ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : '',
+      _minusculas ? 'abcdefghijklmnopqrstuvwxyz' : '',
+      _numeros ? '0123456789' : '',
+      _caracterespecial ? '!@#\$%&*-=+,.<>;:/?' : ''
+    ];
+
+    final String chars = charList.join('');
+    String senha = "";
+    Random rnd = Random();
+
+    senha = String.fromCharCodes(Iterable.generate(
+        _range.round(), (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
+    setState(() {
+      _pass = senha;
+    });
+    return _pass;
   }
 }

@@ -9,7 +9,7 @@ class perfildousuario extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.deepPurple[300],
-        title: const Text('Recuperação de senha'),
+        title: const Text('Perfil do usuário'),
       ),
       body: HomePage(),
     );
@@ -41,34 +41,38 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(35),
-            child: Column(children: [
-              Center(
-                child: ElevatedButton(
-                  onPressed: _openImagePicker,
-                  child: const Text('Selecione a imagem'),
-                ),
-              ),
-              const SizedBox(height: 35),
-              Container(
-                alignment: Alignment.center,
-                width: double.infinity,
-                height: 300,
-                color: Colors.grey[300],
-                child: _image != null
-                    ? Image.file(_image!, fit: BoxFit.cover)
-                    : const Text('Por favor selecione a imagem'),
-              ),
-              const SizedBox(height: 35),
-              fieldNome(),
-              const SizedBox(height: 35),
-              fieldEmail(),
-              const SizedBox(height: 35),
-              fieldSenha(),
-            ]),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(children: [
+          Center(
+            child: ElevatedButton(
+              onPressed: _openImagePicker,
+              child: const Text('Selecione a imagem'),
+            ),
           ),
-        ));
+          const SizedBox(height: 35),
+          Container(
+            alignment: Alignment.center,
+            width: 200,
+            height: 200,
+            color: Colors.grey[300],
+            child: _image != null
+                ? Image.file(_image!, fit: BoxFit.cover)
+                : const Text(
+                    'Selecione a imagem',
+                    style: TextStyle(fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.center,
+                  ),
+          ),
+          const SizedBox(height: 35),
+          fieldNome(),
+          const SizedBox(height: 35),
+          fieldEmail(),
+          const SizedBox(height: 35),
+          fieldSenha(),
+        ]),
+      ),
+    ));
   }
 }
 

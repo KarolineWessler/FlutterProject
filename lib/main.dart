@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/Data/perfil_sqlite_datasource.dart';
 import 'package:flutter_application/cadastro.dart';
 import 'package:flutter_application/recuperarsenha.dart';
 import 'package:flutter_application/login.dart';
@@ -19,11 +20,13 @@ class MyApp extends StatelessWidget {
 }
 
 class _Login extends StatelessWidget {
+  String email = '';
+  String pass = '';
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(100),
+        padding: EdgeInsets.fromLTRB(10, 70, 10, 0),
         child: ListView(
           children: <Widget>[
             Container(
@@ -36,22 +39,29 @@ class _Login extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
+                keyboardType: TextInputType.emailAddress,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), labelText: 'E-mail'),
+                onChanged: (text) {
+                  email = text;
+                },
               ),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+              padding: const EdgeInsets.all(10),
               child: TextField(
                 obscureText: true,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Senha',
                 ),
+                onChanged: (text) {
+                  pass = text;
+                },
               ),
             ),
             Container(
-              padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+              padding:  const EdgeInsets.all(10),
               child: TextButton(
                   onPressed: () {
                     Navigator.push(context,
@@ -66,11 +76,17 @@ class _Login extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('Login'),
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return login();
-                    }));
+                  onPressed: () async {
+                    // if (await perfilSQLiteDatasource()
+                    //     .getPerfilLogin(email, pass)) {
+                    if (email == 'karolis@gmail.com' && pass == '123') {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) {
+                        return login(
+                          email: email,
+                        );
+                      }));
+                    }
                   },
                 )),
             Row(
@@ -81,11 +97,11 @@ class _Login extends StatelessWidget {
                   child: const Text('Não possui conta?'),
                 ),
                 Container(
-                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: TextButton(
                     child: const Text(
                       'Cadastre aqui',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 18),
                     ),
                     onPressed: () {
                       Navigator.push(context,

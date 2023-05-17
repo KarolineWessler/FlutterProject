@@ -1,65 +1,111 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_application/Data/senha_sqlite_datasource.dart';
 import 'alertdialogs.dart';
 
-class cadsenha extends StatelessWidget {
+class cadsenha extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.deepPurple[300],
-          title: const Text('Cadastro de senha'),
-        ),
-        body: _Body());
+  _cadsenhaState createState() {
+    return _cadsenhaState();
   }
 }
 
-class _Body extends StatelessWidget {
+class _cadsenhaState extends State<cadsenha> {
+  TextEditingController _descricaoController = TextEditingController();
+  TextEditingController _loginController = TextEditingController();
+  TextEditingController _senhaController = TextEditingController();
+  bool _ocultaSenha = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ocultaSenha = true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.all(20),
-      child: Form(
-          child: Column(
-        children: [fieldDescricao(), fieldLogin(), fieldPassword(), sendButton(context)],
-      )),
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Cadastro de senhas'),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back),
+            color: Colors.black38,
+            onPressed: () => Navigator.pop(context, false),
+          ),
+        ),
+        body: Stack(
+          children: <Widget>[
+            ListView(children: <Widget>[
+              fieldDescricao(),
+              fieldLogin(),
+              fieldSenha(),
+            ])
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            senhaSQLiteDatasource().inserirSenha(_descricaoController.text,
+                _loginController.text, _senhaController.text);
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
     );
   }
-}
 
-Widget fieldDescricao() {
-  return Container(
+  Widget fieldDescricao() {
+    return Container(
       padding: const EdgeInsets.all(10),
       child: TextField(
-          decoration: const InputDecoration(
-              border: OutlineInputBorder(), labelText: 'Descrição')));
-}
+        controller: _descricaoController,
+        keyboardType: TextInputType.text,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Informe a descrição',
+        ),
+      ),
+    );
+  }
 
-Widget fieldLogin() {
-  return Container(
+  Widget fieldLogin() {
+    return Container(
       padding: const EdgeInsets.all(10),
       child: TextField(
-          decoration: const InputDecoration(
-              border: OutlineInputBorder(), labelText: 'Login')));
-}
+        controller: _loginController,
+        keyboardType: TextInputType.text,
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Login',
+        ),
+      ),
+    );
+  }
 
-Widget fieldPassword() {
-  return Container(
-      padding: const EdgeInsets.all(10),
+  Widget fieldSenha() {
+    return Container(
+      padding: EdgeInsets.all(10),
       child: TextField(
-          decoration: const InputDecoration(
-              border: OutlineInputBorder(), labelText: 'Senha')));
-}
-
-Widget sendButton(context) {
-  return Container(
-      height: 50,
-      width: 600,
-      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-      child: ElevatedButton(
-        child: const Text('Cadastrar'),
-        onPressed: () {
-          showAlertDialog3(context);
-        },
-      ));
+        controller: _senhaController,
+        keyboardType: TextInputType.text,
+        obscureText: _ocultaSenha,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: "Senha",
+          helperText: "Digite uma senha",
+          helperStyle: TextStyle(color: Colors.green),
+          suffixIcon: IconButton(
+            icon: Icon(_ocultaSenha ? Icons.visibility : Icons.visibility_off),
+            onPressed: () {
+              setState(
+                () {
+                  _ocultaSenha = !_ocultaSenha;
+                },
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
 }

@@ -1,54 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application/cadcartao.dart';
+import 'package:flutter_application/listasenha.dart';
 import 'cadsenha.dart';
 import 'gerarsenha.dart';
 
-class cartoes extends StatefulWidget {
+class senhas extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<cartoes> {
-  int _indiceAtual = 0; 
+class _HomeScreenState extends State<senhas> {
+  int _indiceAtual = 0;
   final List<Widget> _telas = [
+    listasenha(),
     gerarsenha(),
-    cadsenha(),
-    cadcartao()
   ];
-  
- @override
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: _telas[_indiceAtual],
       bottomNavigationBar: BottomNavigationBar(
-				currentIndex: _indiceAtual,
+        currentIndex: _indiceAtual,
         onTap: onTabTapped,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Gerar senha"
-          ),
+              icon: Icon(Icons.key), label: "Senhas"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.password),
-              label: "Cadastrar senha"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.credit_card),
-              label: "Cadastrar cartões"
-          ),
+              icon: Icon(Icons.password), label: "Gerar senha"),
         ],
       ),
     );
   }
 
-   void onTabTapped(int index) {
+  void onTabTapped(int index) {
     setState(() {
       _indiceAtual = index;
     });
   }
-
 }
-
-
- 

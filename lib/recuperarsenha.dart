@@ -9,7 +9,7 @@ class recuperarsenha extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepPurple[300],
+        backgroundColor: Color.fromRGBO(149, 117, 205, 1),
         title: const Text('Recuperação de senha'),
       ),
       body: _Body(),
@@ -22,7 +22,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: EdgeInsets.all(100),
+        padding: EdgeInsets.all(10),
         child: ListView(
           children: <Widget>[
             Container(
@@ -33,19 +33,19 @@ class _Body extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.all(10),
-              child: Text("Esqueceu sua senha",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
-              textAlign: TextAlign.center,
-              )
-            ),
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "Esqueceu sua senha",
+                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500),
+                  textAlign: TextAlign.center,
+                )),
             Container(
-              padding: const EdgeInsets.all(10),
-              child: Text("Informe o e-mail associado a sua conta para recuperar a sua senha",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              textAlign: TextAlign.center,
-              )
-            ),
+                padding: const EdgeInsets.all(10),
+                child: Text(
+                  "Informe o e-mail associado a sua conta para recuperar a sua senha",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+                  textAlign: TextAlign.center,
+                )),
             Container(
               padding: const EdgeInsets.all(10),
               child: TextField(
@@ -55,6 +55,7 @@ class _Body extends StatelessWidget {
             ),
             Container(
                 height: 50,
+                width: 500,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
                   child: const Text('Enviar'),
