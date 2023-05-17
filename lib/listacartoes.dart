@@ -51,7 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             child: Text(
               "Excluir todos",
-              style: TextStyle(color: Colors.black),
             ),
           )
         ],

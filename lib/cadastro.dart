@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'Data/perfil_sqlite_datasource.dart';
 import 'alertdialogs.dart';
 
 class cadastro extends StatefulWidget {
@@ -10,8 +11,8 @@ class cadastro extends StatefulWidget {
 }
 
 class _cadastroState extends State<cadastro> {
-  TextEditingController _descricaoController = TextEditingController();
-  TextEditingController _loginController = TextEditingController();
+  TextEditingController _nomeController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
   TextEditingController _senhaController = TextEditingController();
   bool _ocultaSenha = false;
 
@@ -45,7 +46,7 @@ class _cadastroState extends State<cadastro> {
                   fieldName(),
                   fieldEmail(),
                   fieldPassword(),
-                  saveButton(context),
+                  saveButton(),
                 ],
               ),
             ),
@@ -69,6 +70,7 @@ class _cadastroState extends State<cadastro> {
     return Container(
         padding: const EdgeInsets.all(10),
         child: TextField(
+            controller: _nomeController,
             decoration: const InputDecoration(
                 border: OutlineInputBorder(), labelText: 'Nome')));
   }
@@ -77,6 +79,7 @@ class _cadastroState extends State<cadastro> {
     return Container(
         padding: const EdgeInsets.all(10),
         child: TextField(
+          controller: _emailController,
             decoration: const InputDecoration(
                 border: OutlineInputBorder(), labelText: 'E-mail')));
   }
@@ -108,7 +111,7 @@ class _cadastroState extends State<cadastro> {
     );
   }
 
-  Widget saveButton(context) {
+  Widget saveButton() {
     return Container(
         height: 50,
         width: 500,
@@ -116,8 +119,10 @@ class _cadastroState extends State<cadastro> {
         child: ElevatedButton(
           child: const Text('Cadastrar'),
           onPressed: () {
-            showAlertDialog2(context);
+            perfilSQLiteDatasource().inserirPerfil(_nomeController.text,
+                _emailController.text, _senhaController.text);
           },
         ));
   }
 }
+

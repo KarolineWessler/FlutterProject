@@ -1,5 +1,3 @@
-import 'dart:html';
-
 class SenhaEntity {
   late int? senhaID;
   String? descricao;
