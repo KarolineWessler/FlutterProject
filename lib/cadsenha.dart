@@ -45,10 +45,10 @@ class _cadsenhaState extends State<cadsenha> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            senhaSQLiteDatasource().inserirSenha(_descricaoController.text,
+            senhaSQLiteDatasource().insertPassword(_descricaoController.text,
                 _loginController.text, _senhaController.text);
           },
-          child: Icon(Icons.add),
+          child: Icon(Icons.save_alt),
         ),
       ),
     );

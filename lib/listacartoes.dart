@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'cadcartao.dart';
-import 'cadsenha.dart';
-import 'Data/cartao_entity.dart';
+import 'Data/cartao_Entity.dart';
 import 'package:flutter_application/Data/cartao_sqlite_datasource.dart';
 
 class listacartoes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Lista de cartões",
-      theme: ThemeData(useMaterial3: true),
-      home: MyHomePage(),
+    return Scaffold(
+     body: MyHomePage(),
     );
   }
 }
@@ -34,15 +31,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Lista de cartões"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black38,
-          onPressed: () => Navigator.pop(context, false),
-        ),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
-              cartaoSQLiteDatasource().deletarCartoes();
+              cartaoSQLiteDatasource().deleteAllCards();
               setState(() {});
             },
             style: ElevatedButton.styleFrom(
@@ -56,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: FutureBuilder<List<CartaoEntity>>(
-        // future: cartaoSQLiteDatasource().getAllCartoes(),
+        future: cartaoSQLiteDatasource().getAllCards(),
         builder:
             (BuildContext context, AsyncSnapshot<List<CartaoEntity>> snapshot) {
           if (snapshot.hasData) {
@@ -69,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   key: UniqueKey(),
                   background: Container(color: Colors.green),
                   onDismissed: (direction) {
-                    cartaoSQLiteDatasource().deletarCartaoID(item.cartaoID);
+                    cartaoSQLiteDatasource().deleteCard(item.cartaoID);
                   },
                   child: ListTile(
                     title: Text(item.descricao!),

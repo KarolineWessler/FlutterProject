@@ -23,7 +23,7 @@ class _cadcartaoState extends State<cadcartao> {
       theme: ThemeData(useMaterial3: true),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Cadastro cartões'),
+          title: const Text('Cadastro de cartões'),
           leading: IconButton(
             icon: Icon(Icons.arrow_back),
             color: Colors.black38,
@@ -48,14 +48,14 @@ class _cadcartaoState extends State<cadcartao> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            cartaoSQLiteDatasource().inserirCartao(
+            cartaoSQLiteDatasource().insertCard(
                 _descricaoController.text,
                 _numeroCartaoController.text,
                 _validadeController.text,
                 _cvvController.text,
                 _senhaController.text);
           },
-          child: Icon(Icons.add),
+          child: Icon(Icons.save_alt),
         ),
       ),
     );
@@ -143,17 +143,6 @@ class _cadcartaoState extends State<cadcartao> {
     );
   }
 
-  Widget textNome() {
-    return Expanded(
-        child: Align(
-            alignment: Alignment.bottomRight,
-            child: Text(
-              'Karoline B Wessler',
-              style: TextStyle(fontSize: 20, color: Colors.white),
-              textAlign: TextAlign.center,
-            )));
-  }
-
   Widget CartaoFrente(context) {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
@@ -174,7 +163,7 @@ class _cadcartaoState extends State<cadcartao> {
           borderRadius: BorderRadius.circular(20),
           color: Color.fromARGB(255, 16, 121, 22)),
       child: Column(crossAxisAlignment: CrossAxisAlignment.center,
-        children: [fieldNumero(), fieldValidade(), fieldSenha(), textNome()],
+        children: [fieldNumero(), fieldValidade(), fieldSenha()],
       ),
     );
   }

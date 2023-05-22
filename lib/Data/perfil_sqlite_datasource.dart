@@ -8,20 +8,29 @@ import 'conexao.dart';
 import 'data_constants.dart';
 
 class perfilSQLiteDatasource {
-  Future inserirPerfil(nome, email, senha) async {
-    try {
-      final Database db = await Conexao.getConexaoDB();
-      await db.rawInsert('''insert into $PERFIL_TABLE_NAME(
-              $PERFIL_COLUMN_NOME,
-              $PERFIL_COLUMN_EMAIL,
-              $PERFIL_COLUMN_SENHA)
-              values(
-                '${nome}','${email}','${senha}') 
-              ''');
-      queryAllRows();
-    } catch (ex) {
-      return;
-    }
+  Future<void> insertProfile(String nome, String email, String senha) async {
+    final db = await Conexao.getConexaoDB();
+    final perfilEntity = PerfilEntity(
+      nome: nome,
+      email: email,
+      senha: senha,
+    );
+
+    int? perfilID = await db.rawInsert('''
+    INSERT INTO $PERFIL_TABLE_NAME (
+      $PERFIL_COLUMN_NOME,
+      $PERFIL_COLUMN_EMAIL,
+      $PERFIL_COLUMN_SENHA
+    )
+    VALUES (?, ?, ?)
+  ''', [
+      perfilEntity.nome,
+      perfilEntity.email,
+      perfilEntity.senha,
+    ]);
+
+    perfilEntity.perfilID = perfilID;
+    print(perfilEntity);
   }
 
   Future<List<Map<String, dynamic>>> queryAllRows() async {
@@ -29,9 +38,9 @@ class perfilSQLiteDatasource {
     return await db.query(PERFIL_TABLE_NAME);
   }
 
-  Future<List<PerfilEntity>> getAllPerfil() async {
+  Future<List<PerfilEntity>> getAllProfiles() async {
     Database db = await Conexao.getConexaoDB();
-    List<Map> dbResult = await db.rawQuery('SELECT * from $PERFIL_TABLE_NAME');
+    List<Map> dbResult = await db.rawQuery('SELECT * FROM $PERFIL_TABLE_NAME');
 
     List<PerfilEntity> perfis = [];
     for (var row in dbResult) {
@@ -45,59 +54,27 @@ class perfilSQLiteDatasource {
     return perfis;
   }
 
-   Future<bool> getPerfilLogin(login, senha) async {
+  Future<bool> getLogin(login, senha) async {
     Database db = await Conexao.getConexaoDB();
-    List<Map> dbResult = await db.rawQuery(
-        'SELECT * from $PERFIL_TABLE_NAME where $PERFIL_COLUMN_EMAIL = $login and $PERFIL_COLUMN_SENHA = $senha');
-    
+    List<Map> dbResult = await db.rawQuery('''
+              SELECT * FROM $PERFIL_TABLE_NAME
+              WHERE $PERFIL_COLUMN_EMAIL = '$login' AND $PERFIL_COLUMN_SENHA = '$senha'
+              ''');
     if (dbResult.isEmpty)
       return false;
     else
       return true;
   }
 
-  Future<void> atualizarPerfil(PerfilEntity perfil) async {
+  Future<String> getLoggedUsed(email) async {
     Database db = await Conexao.getConexaoDB();
-    await db.transaction((txn) async {
-      await txn.rawUpdate(
-          'update $PERFIL_TABLE_NAME set $PERFIL_COLUMN_NOME = ?, $PERFIL_COLUMN_EMAIL = ?, $PERFIL_COLUMN_SENHA = ? where id = ?',
-          [perfil.nome, perfil.email, perfil.senha]);
-    });
-  }
-
-  Future<void> deletarPerfil(perfilID) async {
-    Database db = await Conexao.getConexaoDB();
-    await db.transaction((txn) async {
-      await txn
-          .rawUpdate('delete from $PERFIL_TABLE_NAME where id = ?', [perfilID]);
-    });
-  }
-
-  Future<List<PerfilEntity>> pesquisarPerfil(String filtro) async {
-    List<PerfilEntity> perfis = [];
-    Database db = await Conexao.getConexaoDB();
+    String nome = "";
     List<Map> dbResult = await db.rawQuery(
-        'SELECT * from $PERFIL_TABLE_NAME where $PERFIL_COLUMN_NOME like ?',
-        ['%$filtro%']);
-    for (var row in dbResult) {
-      PerfilEntity perfil = PerfilEntity();
-      perfil.perfilID = row['perfilID'];
-      perfil.nome = row['nome'];
-      perfil.email = row['email'];
-      perfis.add(perfil);
-    }
-    return perfis;
-  }
-
-  Future<String> getPerfilLogado(email) async {
-    Database db = await Conexao.getConexaoDB();
-    String nome="";
-    List<Map> dbResult = await db.rawQuery(
-        'SELECT * from $PERFIL_TABLE_NAME where $PERFIL_COLUMN_EMAIL = $email ');
+        '''SELECT * FROM $PERFIL_TABLE_NAME WHERE $PERFIL_COLUMN_EMAIL = '$email' ''');
 
     for (var row in dbResult) {
       nome = row['nome'];
     }
-    return nome ;
+    return nome;
   }
 }

@@ -27,7 +27,16 @@ class _login extends State<login> {
           children: [
             // ignore: prefer_const_constructors
             UserAccountsDrawerHeader(
-              accountName: Text("Karolis"),
+              accountName: FutureBuilder<String>(
+                future: getNome(widget.email),
+                builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                  if (snapshot.hasData) {
+                    return Text(snapshot.data!);
+                  } else {
+                    return Text('');
+                  }
+                },
+              ),
               accountEmail: Text(widget.email),
               // ignore: prefer_const_constructors
               currentAccountPicture: CircleAvatar(
@@ -92,5 +101,5 @@ class _login extends State<login> {
 }
 
 Future<String> getNome(email) async {
-  return Future.value(perfilSQLiteDatasource().getPerfilLogado(email));
+  return Future.value(perfilSQLiteDatasource().getLoggedUsed(email));
 }

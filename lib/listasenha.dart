@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'cadsenha.dart';
-import 'Data/senha_entity.dart';
+import 'package:flutter_application/Data/senha_Entity.dart';
 import 'package:flutter_application/Data/senha_sqlite_datasource.dart';
 
 class listasenha extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Lista de senhas",
-      theme: ThemeData(useMaterial3: true),
-      home: MyHomePage(),
+    return Scaffold(
+      body: MyHomePage(),
     );
   }
 }
@@ -35,15 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Lista de senhas"),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          color: Colors.black38,
-          onPressed: () => Navigator.pop(context, true),
-        ),
         actions: <Widget>[
           ElevatedButton(
             onPressed: () {
-              senhaSQLiteDatasource().deletarSenhas();
+              senhaSQLiteDatasource().deletePasswords();
               setState(() {});
             },
             style: ElevatedButton.styleFrom(
@@ -57,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       body: FutureBuilder<List<SenhaEntity>>(
-        // future: senhaSQLiteDatasource().getAllSenha(),
+          future: senhaSQLiteDatasource().getAllPasswords(),
         builder:
             (BuildContext context, AsyncSnapshot<List<SenhaEntity>> snapshot) {
           if (snapshot.hasData) {
@@ -69,7 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 return Dismissible(
                   key: UniqueKey(),
                   onDismissed: (direction) {
-                    senhaSQLiteDatasource().deletarSenhaID(item.senhaID);
+                    senhaSQLiteDatasource().deletePasswordById(item.senhaID);
                   },
                   child: ListTile(
                     title: Text(item.descricao!),

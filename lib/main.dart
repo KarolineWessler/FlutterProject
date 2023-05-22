@@ -77,9 +77,8 @@ class _Login extends StatelessWidget {
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () async {
-                    if (await perfilSQLiteDatasource()
-                        .getPerfilLogin(email, pass)) {
-                    // if (email == 'karolis@gmail.com' && pass == '123') {
+                     if (await perfilSQLiteDatasource()
+                        .getLogin(email, pass)) {
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return login(

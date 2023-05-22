@@ -119,7 +119,7 @@ class _cadastroState extends State<cadastro> {
         child: ElevatedButton(
           child: const Text('Cadastrar'),
           onPressed: () {
-            perfilSQLiteDatasource().inserirPerfil(_nomeController.text,
+            perfilSQLiteDatasource().insertProfile(_nomeController.text,
                 _emailController.text, _senhaController.text);
           },
         ));
